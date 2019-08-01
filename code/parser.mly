@@ -5,6 +5,7 @@ open Syntax
 %token LPAREN RPAREN SEMISEMI RARROW
 %token PLUS MULT LT EQ
 %token IF THEN ELSE TRUE FALSE LET IN FUN REC
+%token LOOP RECUR COMMA DOT
 
 %token <int> INTV
 %token <Syntax.id> ID
@@ -15,7 +16,7 @@ open Syntax
 
 toplevel :
     e=Expr SEMISEMI { let ast = e in
-                      recur_check ast;
+                      recur_check ast false;
                       ast }
 
 Expr :
@@ -23,6 +24,10 @@ Expr :
   | e=FunExpr    { e }
   | e=LetExpr    { e }
   | e=LetRecExpr { e }
+  | e=LoopExpr   { e }
+  | e=RecurExpr  { e }
+  | e=TupleExpr  { e }
+  | e=ProjExpr   { e }
   | e=LTExpr     { e }
 
 LTExpr :
@@ -65,3 +70,15 @@ LetRecExpr :
           err "main must not be declared"
         else
           LetRecExp (i, p, e1, e2) }
+
+LoopExpr :
+    LOOP i=ID EQ e1=Expr IN e2=Expr { LoopExp (i, e1, e2) }
+
+RecurExpr :
+    RECUR e=Expr { RecurExp e }
+
+TupleExpr :
+    LPAREN e1=Expr COMMA e2=Expr RPAREN { TupleExp (e1, e2) }
+
+ProjExpr :
+    LPAREN e=Expr DOT i=INTV RPAREN { ProjExp (e, i) }

@@ -22,4 +22,16 @@ type exp =
 
 (* ==== recur式が末尾位置にのみ書かれていることを検査 ==== *)
 
-let recur_check e = ()
+let rec recur_check exp f =  
+  match exp with
+      RecurExp e -> if f then () else err ("recur_check error")
+    | BinOp (_, e1, e2) -> recur_check e1 false;recur_check e2 false
+    | IfExp (e1, e2, e3) -> recur_check e1 false;recur_check e2 f;recur_check e3 f
+    | LetExp (_, e1, e2) -> recur_check e1 false;recur_check e2 f
+    | FunExp (_, e) -> recur_check e false
+    | AppExp (e1, e2) -> recur_check e1 false;recur_check e2 false
+    | LetRecExp (_, _, e1, e2) -> recur_check e1 false;recur_check e2 f
+    | LoopExp (_, e1, e2) -> recur_check e1 false;recur_check e2 true
+    | TupleExp (e1, e2) -> recur_check e1 false;recur_check e2 false
+    | ProjExp (e, _) -> recur_check e false
+    | _ -> ()

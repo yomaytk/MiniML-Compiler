@@ -6,12 +6,14 @@ type token =
   | THEN
   | SEMISEMI
   | RPAREN
+  | RECUR
   | REC
   | RARROW
   | PLUS
   | MULT
   | LT
   | LPAREN
+  | LOOP
   | LET
   | INTV of (int)
   | IN
@@ -21,6 +23,8 @@ type token =
   | FALSE
   | EQ
   | ELSE
+  | DOT
+  | COMMA
 
 (* This exception is raised by the monolithic API functions. *)
 

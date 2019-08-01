@@ -10,6 +10,8 @@ let reservedWords = [
   ("rec", Parser.REC);
   ("then", Parser.THEN);
   ("true", Parser.TRUE);
+  ("loop", Parser.LOOP);
+  ("recur", Parser.RECUR);
 ]
 }
 
@@ -28,6 +30,8 @@ rule main = parse
 | "<" { Parser.LT }
 | "=" { Parser.EQ }
 | "->" { Parser.RARROW }
+| "," { Parser.COMMA }
+| "." { Parser.DOT }
 
 | ['a'-'z'] ['a'-'z' '0'-'9' '_' '\'']*
     { let id = Lexing.lexeme lexbuf in
@@ -35,5 +39,5 @@ rule main = parse
         List.assoc id reservedWords
       with
       _ -> Parser.ID id
-     }
+    }
 | eof { exit 0 }
