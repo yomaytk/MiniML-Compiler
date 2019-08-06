@@ -24,7 +24,7 @@ type exp =
 
 let rec recur_check exp f =  
   match exp with
-      RecurExp e -> if f then () else err ("recur_check error")
+      RecurExp e -> if f then recur_check e false else err ("recur_check error")
     | BinOp (_, e1, e2) -> recur_check e1 false;recur_check e2 false
     | IfExp (e1, e2, e3) -> recur_check e1 false;recur_check e2 f;recur_check e3 f
     | LetExp (_, e1, e2) -> recur_check e1 false;recur_check e2 f
