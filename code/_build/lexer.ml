@@ -1,18 +1,18 @@
 # 1 "lexer.mll"
  
 let reservedWords = [
-  (* Keywords *)
-  ("else", Parser.ELSE);
-  ("false", Parser.FALSE);
-  ("fun", Parser.FUN);
-  ("if", Parser.IF);
-  ("in", Parser.IN);
-  ("let", Parser.LET);
-  ("rec", Parser.REC);
-  ("then", Parser.THEN);
-  ("true", Parser.TRUE);
-  ("loop", Parser.LOOP);
-  ("recur", Parser.RECUR);
+	(* Keywords *)
+	("else", Parser.ELSE);
+	("false", Parser.FALSE);
+	("fun", Parser.FUN);
+	("if", Parser.IF);
+	("in", Parser.IN);
+	("let", Parser.LET);
+	("rec", Parser.REC);
+	("then", Parser.THEN);
+	("true", Parser.TRUE);
+	("loop", Parser.LOOP);
+	("recur", Parser.RECUR);
 ]
 
 # 19 "lexer.ml"
@@ -143,12 +143,12 @@ and __ocaml_lex_main_rec lexbuf __ocaml_lex_state =
   match Lexing.engine __ocaml_lex_tables __ocaml_lex_state lexbuf with
       | 0 ->
 # 20 "lexer.mll"
-                                ( main lexbuf )
+                               ( main lexbuf )
 # 148 "lexer.ml"
 
   | 1 ->
 # 23 "lexer.mll"
-    ( Parser.INTV (int_of_string (Lexing.lexeme lexbuf)) )
+  ( Parser.INTV (int_of_string (Lexing.lexeme lexbuf)) )
 # 153 "lexer.ml"
 
   | 2 ->
@@ -203,12 +203,12 @@ and __ocaml_lex_main_rec lexbuf __ocaml_lex_state =
 
   | 12 ->
 # 37 "lexer.mll"
-    ( let id = Lexing.lexeme lexbuf in
-      try
-        List.assoc id reservedWords
-      with
-      _ -> Parser.ID id
-    )
+  ( let id = Lexing.lexeme lexbuf in
+			try
+				List.assoc id reservedWords
+			with
+			_ -> Parser.ID id
+		)
 # 213 "lexer.ml"
 
   | 13 ->

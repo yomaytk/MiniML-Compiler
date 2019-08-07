@@ -18,7 +18,7 @@ ocamlfind ocamldep -modules flat.ml > flat.ml.depends # cached
 # Target: closure.ml.depends, tags: { extension:ml, file:closure.ml, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -modules closure.ml > closure.ml.depends # cached
 # Target: normal.ml.depends, tags: { extension:ml, file:normal.ml, ocaml, ocamldep, quiet }
-ocamlfind ocamldep -modules normal.ml > normal.ml.depends
+ocamlfind ocamldep -modules normal.ml > normal.ml.depends # cached
 # Target: misc.ml.depends, tags: { extension:ml, file:misc.ml, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -modules misc.ml > misc.ml.depends # cached
 # Target: misc.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:misc.cmo, file:misc.ml, implem, ocaml, quiet }
@@ -28,25 +28,31 @@ ocamlfind ocamldep -modules pretty.mli > pretty.mli.depends # cached
 # Target: pretty.cmi, tags: { byte, compile, extension:mli, file:pretty.mli, interf, ocaml, quiet }
 ocamlfind ocamlc -c -o pretty.cmi pretty.mli # cached
 # Target: normal.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:normal.cmo, file:normal.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -o normal.cmo normal.ml
+ocamlfind ocamlc -c -o normal.cmo normal.ml # cached
 # Target: closure.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:closure.cmo, file:closure.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -o closure.cmo closure.ml
+ocamlfind ocamlc -c -o closure.cmo closure.ml # cached
 # Target: flat.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:flat.cmo, file:flat.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -o flat.cmo flat.ml
+ocamlfind ocamlc -c -o flat.cmo flat.ml # cached
 # Target: vm.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:vm.cmo, file:vm.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -o vm.cmo vm.ml
+ocamlfind ocamlc -c -o vm.cmo vm.ml # cached
+# Target: arm_noreg.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:arm_noreg.cmo, file:arm_noreg.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -o arm_noreg.cmo arm_noreg.ml # cached
 # Target: arm_reg.ml.depends, tags: { extension:ml, file:arm_reg.ml, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -modules arm_reg.ml > arm_reg.ml.depends # cached
 # Target: reg.ml.depends, tags: { extension:ml, file:reg.ml, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -modules reg.ml > reg.ml.depends # cached
 # Target: reg.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:reg.cmo, file:reg.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -o reg.cmo reg.ml
+ocamlfind ocamlc -c -o reg.cmo reg.ml # cached
+# Target: arm_reg.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:arm_reg.cmo, file:arm_reg.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -o arm_reg.cmo arm_reg.ml # cached
 # Target: cfg.ml.depends, tags: { extension:ml, file:cfg.ml, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -modules cfg.ml > cfg.ml.depends # cached
 # Target: mySet.mli.depends, tags: { extension:mli, file:mySet.mli, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -modules mySet.mli > mySet.mli.depends # cached
 # Target: mySet.cmi, tags: { byte, compile, extension:mli, file:mySet.mli, interf, ocaml, quiet }
 ocamlfind ocamlc -c -o mySet.cmi mySet.mli # cached
+# Target: cfg.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:cfg.cmo, file:cfg.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -o cfg.cmo cfg.ml # cached
 # Target: lexer.mll, tags: { extension:mll, file:lexer.mll, lexer, ocaml, ocamllex, quiet }
 /home/masashi/.opam/4.07.1/bin/ocamllex.opt -q lexer.mll # cached
 # Target: lexer.ml.depends, tags: { extension:ml, file:lexer.ml, ocaml, ocamldep, quiet }
@@ -63,28 +69,22 @@ ocamlfind ocamlc -c -o parser.cmi parser.mli # cached
 ocamlfind ocamlc -c -o lexer.cmo lexer.ml # cached
 # Target: opt.ml.depends, tags: { extension:ml, file:opt.ml, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -modules opt.ml > opt.ml.depends # cached
-# Target: cfg.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:cfg.cmo, file:cfg.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -o cfg.cmo cfg.ml
 # Target: dfa.ml.depends, tags: { extension:ml, file:dfa.ml, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -modules dfa.ml > dfa.ml.depends # cached
 # Target: myMap.mli.depends, tags: { extension:mli, file:myMap.mli, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -modules myMap.mli > myMap.mli.depends # cached
 # Target: myMap.cmi, tags: { byte, compile, extension:mli, file:myMap.mli, interf, ocaml, quiet }
 ocamlfind ocamlc -c -o myMap.cmi myMap.mli # cached
+# Target: dfa.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:dfa.cmo, file:dfa.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -o dfa.cmo dfa.ml # cached
 # Target: live.ml.depends, tags: { extension:ml, file:live.ml, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -modules live.ml > live.ml.depends # cached
-# Target: dfa.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:dfa.cmo, file:dfa.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -o dfa.cmo dfa.ml
 # Target: live.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:live.cmo, file:live.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -o live.cmo live.ml
-# Target: arm_noreg.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:arm_noreg.cmo, file:arm_noreg.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -o arm_noreg.cmo arm_noreg.ml
-# Target: arm_reg.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:arm_reg.cmo, file:arm_reg.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -o arm_reg.cmo arm_reg.ml
+ocamlfind ocamlc -c -o live.cmo live.ml # cached
 # Target: opt.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:opt.cmo, file:opt.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -o opt.cmo opt.ml
+ocamlfind ocamlc -c -o opt.cmo opt.ml # cached
 # Target: main.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:main.cmo, file:main.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -o main.cmo main.ml
+ocamlfind ocamlc -c -o main.cmo main.ml # cached
 # Target: arm_spec.cmx, tags: { compile, extension:cmx, extension:ml, file:arm_spec.cmx, file:arm_spec.ml, implem, native, ocaml, quiet }
 ocamlfind ocamlopt -c -o arm_spec.cmx arm_spec.ml # cached
 # Target: syntax.cmx, tags: { compile, extension:cmx, extension:ml, file:syntax.cmx, file:syntax.ml, implem, native, ocaml, quiet }
@@ -96,43 +96,43 @@ ocamlfind ocamldep -modules pretty.ml > pretty.ml.depends # cached
 # Target: pretty.cmx, tags: { compile, extension:cmx, extension:ml, file:pretty.cmx, file:pretty.ml, implem, native, ocaml, quiet }
 ocamlfind ocamlopt -c -o pretty.cmx pretty.ml # cached
 # Target: normal.cmx, tags: { compile, extension:cmx, extension:ml, file:normal.cmx, file:normal.ml, implem, native, ocaml, quiet }
-ocamlfind ocamlopt -c -o normal.cmx normal.ml
+ocamlfind ocamlopt -c -o normal.cmx normal.ml # cached
 # Target: closure.cmx, tags: { compile, extension:cmx, extension:ml, file:closure.cmx, file:closure.ml, implem, native, ocaml, quiet }
-ocamlfind ocamlopt -c -o closure.cmx closure.ml
+ocamlfind ocamlopt -c -o closure.cmx closure.ml # cached
 # Target: flat.cmx, tags: { compile, extension:cmx, extension:ml, file:flat.cmx, file:flat.ml, implem, native, ocaml, quiet }
-ocamlfind ocamlopt -c -o flat.cmx flat.ml
+ocamlfind ocamlopt -c -o flat.cmx flat.ml # cached
 # Target: vm.cmx, tags: { compile, extension:cmx, extension:ml, file:vm.cmx, file:vm.ml, implem, native, ocaml, quiet }
-ocamlfind ocamlopt -c -o vm.cmx vm.ml
+ocamlfind ocamlopt -c -o vm.cmx vm.ml # cached
+# Target: arm_noreg.cmx, tags: { compile, extension:cmx, extension:ml, file:arm_noreg.cmx, file:arm_noreg.ml, implem, native, ocaml, quiet }
+ocamlfind ocamlopt -c -o arm_noreg.cmx arm_noreg.ml # cached
 # Target: reg.cmx, tags: { compile, extension:cmx, extension:ml, file:reg.cmx, file:reg.ml, implem, native, ocaml, quiet }
-ocamlfind ocamlopt -c -o reg.cmx reg.ml
+ocamlfind ocamlopt -c -o reg.cmx reg.ml # cached
+# Target: arm_reg.cmx, tags: { compile, extension:cmx, extension:ml, file:arm_reg.cmx, file:arm_reg.ml, implem, native, ocaml, quiet }
+ocamlfind ocamlopt -c -o arm_reg.cmx arm_reg.ml # cached
 # Target: mySet.ml.depends, tags: { extension:ml, file:mySet.ml, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -modules mySet.ml > mySet.ml.depends # cached
 # Target: mySet.cmx, tags: { compile, extension:cmx, extension:ml, file:mySet.cmx, file:mySet.ml, implem, native, ocaml, quiet }
 ocamlfind ocamlopt -c -o mySet.cmx mySet.ml # cached
+# Target: cfg.cmx, tags: { compile, extension:cmx, extension:ml, file:cfg.cmx, file:cfg.ml, implem, native, ocaml, quiet }
+ocamlfind ocamlopt -c -o cfg.cmx cfg.ml # cached
 # Target: parser.ml.depends, tags: { extension:ml, file:parser.ml, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -modules parser.ml > parser.ml.depends # cached
 # Target: parser.cmx, tags: { compile, extension:cmx, extension:ml, file:parser.cmx, file:parser.ml, implem, native, ocaml, quiet }
 ocamlfind ocamlopt -c -o parser.cmx parser.ml # cached
 # Target: lexer.cmx, tags: { compile, extension:cmx, extension:ml, file:lexer.cmx, file:lexer.ml, implem, native, ocaml, quiet }
 ocamlfind ocamlopt -c -o lexer.cmx lexer.ml # cached
-# Target: cfg.cmx, tags: { compile, extension:cmx, extension:ml, file:cfg.cmx, file:cfg.ml, implem, native, ocaml, quiet }
-ocamlfind ocamlopt -c -o cfg.cmx cfg.ml
 # Target: myMap.ml.depends, tags: { extension:ml, file:myMap.ml, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -modules myMap.ml > myMap.ml.depends # cached
 # Target: myMap.cmx, tags: { compile, extension:cmx, extension:ml, file:myMap.cmx, file:myMap.ml, implem, native, ocaml, quiet }
 ocamlfind ocamlopt -c -o myMap.cmx myMap.ml # cached
 # Target: dfa.cmx, tags: { compile, extension:cmx, extension:ml, file:dfa.cmx, file:dfa.ml, implem, native, ocaml, quiet }
-ocamlfind ocamlopt -c -o dfa.cmx dfa.ml
+ocamlfind ocamlopt -c -o dfa.cmx dfa.ml # cached
 # Target: live.cmx, tags: { compile, extension:cmx, extension:ml, file:live.cmx, file:live.ml, implem, native, ocaml, quiet }
-ocamlfind ocamlopt -c -o live.cmx live.ml
-# Target: arm_noreg.cmx, tags: { compile, extension:cmx, extension:ml, file:arm_noreg.cmx, file:arm_noreg.ml, implem, native, ocaml, quiet }
-ocamlfind ocamlopt -c -o arm_noreg.cmx arm_noreg.ml
-# Target: arm_reg.cmx, tags: { compile, extension:cmx, extension:ml, file:arm_reg.cmx, file:arm_reg.ml, implem, native, ocaml, quiet }
-ocamlfind ocamlopt -c -o arm_reg.cmx arm_reg.ml
+ocamlfind ocamlopt -c -o live.cmx live.ml # cached
 # Target: opt.cmx, tags: { compile, extension:cmx, extension:ml, file:opt.cmx, file:opt.ml, implem, native, ocaml, quiet }
-ocamlfind ocamlopt -c -o opt.cmx opt.ml
+ocamlfind ocamlopt -c -o opt.cmx opt.ml # cached
 # Target: main.cmx, tags: { compile, extension:cmx, extension:ml, file:main.cmx, file:main.ml, implem, native, ocaml, quiet }
-ocamlfind ocamlopt -c -o main.cmx main.ml
+ocamlfind ocamlopt -c -o main.cmx main.ml # cached
 # Target: main.native, tags: { dont_link_with, extension:native, file:main.native, link, native, ocaml, program, quiet }
-ocamlfind ocamlopt -linkpkg arm_spec.cmx misc.cmx pretty.cmx syntax.cmx normal.cmx closure.cmx flat.cmx vm.cmx arm_noreg.cmx reg.cmx arm_reg.cmx mySet.cmx cfg.cmx myMap.cmx dfa.cmx parser.cmx lexer.cmx live.cmx opt.cmx main.cmx -o main.native
+ocamlfind ocamlopt -linkpkg arm_spec.cmx misc.cmx pretty.cmx syntax.cmx normal.cmx closure.cmx flat.cmx vm.cmx arm_noreg.cmx reg.cmx arm_reg.cmx mySet.cmx cfg.cmx myMap.cmx dfa.cmx parser.cmx lexer.cmx live.cmx opt.cmx main.cmx -o main.native # cached
 # Compilation successful.
