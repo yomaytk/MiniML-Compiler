@@ -21,7 +21,7 @@ let rec compile prompt ichan cont =
     dprint (fun () -> "(* [Normal form] *)\n" ^ (Normal.string_of_norm norm));
 
     (* Closure conversion (4章) *)
-    let closed = Closure.convert norm in
+    let closed = Closure.convert_exe norm in
     dprint (fun () -> "\n(* [Closure] *)\n" ^ (Closure.string_of_closure closed));
 
     (* Flattening (5章前半) *)

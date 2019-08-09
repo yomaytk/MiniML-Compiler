@@ -128,8 +128,9 @@ let rec norm_exp (e: Syntax.exp) (f: cexp -> exp) = match e with
                 S.LetExp (_, _, _) | S.LetRecExp (_, _, _, _) | S.LoopExp(_, _, _) | S.RecurExp _ -> 
                 let nid = fresh_id "va" in
                 norm_exp e1 (fun x -> LetExp (nid, x, LetExp(id, ValExp (Var nid), norm_exp e2 f)))
+                (* norm_exp e1 (fun x -> LetExp (id, x, norm_exp e2 f)) *)
             | _ -> norm_exp e1 (fun x -> LetExp (id, x, norm_exp e2 f)))
-	| S.FunExp (id, e) -> let ff = fresh_id "vaf" in norm_exp (S.LetRecExp (ff, id, e, Var ff)) f
+	| S.FunExp (id, e) -> let ff = fresh_id "f" in norm_exp (S.LetRecExp (ff, id, e, Var ff)) f
 	| S.AppExp (e1, e2) -> 
 		(match e1 with
                 S.Var _ -> let e1v = con_expvalue e1 in
@@ -137,7 +138,8 @@ let rec norm_exp (e: Syntax.exp) (f: cexp -> exp) = match e with
                             S.Var _ | S.ILit _ | S.BLit _ ->  f (AppExp (e1v, con_expvalue e2))
                         |	_ -> let nid2 = fresh_id "va" in
                                     norm_exp e2 (fun x -> LetExp (nid2, x, f (AppExp (e1v, Var nid2)))))
-			| 	S.ILit _ | S.BLit _ -> err "e1 must be fun in e1 e2"
+            | 	S.ILit _ | S.BLit _ -> err "e1 must be fun in e1 e2"
+            (* |   S.FunExp (_, _) -> let ff = norm_exp e1 (fun x ->  x)  *)
 			|	_ -> let nid1 = fresh_id "va" in
                         (match e2 with
                                 S.Var _ | S.ILit _ | S.BLit _ -> norm_exp e1 (fun x -> LetExp (nid1, x, f (AppExp (Var nid1, con_expvalue e2))))

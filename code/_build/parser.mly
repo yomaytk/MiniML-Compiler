@@ -26,8 +26,7 @@ Expr :
 	| e=LetRecExpr { e }
 	| e=LoopExpr   { e }
 	| e=RecurExpr  { e }
-	| e=TupleExpr  { e }
-	| e=ProjExpr   { e }
+	/* | e=TupleExpr  { e } */
 	| e=LTExpr     { e }
 
 LTExpr :
@@ -40,7 +39,15 @@ PExpr :
 
 MExpr :
 		e1=MExpr MULT e2=AppExpr { BinOp (Mult, e1, e2) }
-	| e=AppExpr { e }
+	| e=TupleExpr { e }
+
+TupleExpr :
+		LPAREN e1=Expr COMMA e2=Expr RPAREN { TupleExp (e1, e2) }
+  | e=ProjExpr { e }
+
+ProjExpr :
+		e=AExpr DOT i=INTV { ProjExp (e, i) }
+  | e=AppExpr { e }
 
 AppExpr :
 		e1=AppExpr e2=AExpr { AppExp (e1, e2) }
@@ -77,8 +84,3 @@ LoopExpr :
 RecurExpr :
 		RECUR e=Expr { RecurExp e }
 
-TupleExpr :
-		LPAREN e1=Expr COMMA e2=Expr RPAREN { TupleExp (e1, e2) }
-
-ProjExpr :
-		e=AExpr DOT i=INTV { ProjExp (e, i) }
