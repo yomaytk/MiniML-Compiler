@@ -14,9 +14,9 @@ ocamlfind ocamlc -c -o syntax.cmo syntax.ml # cached
 # Target: vm.ml.depends, tags: { extension:ml, file:vm.ml, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -modules vm.ml > vm.ml.depends # cached
 # Target: flat.ml.depends, tags: { extension:ml, file:flat.ml, ocaml, ocamldep, quiet }
-ocamlfind ocamldep -modules flat.ml > flat.ml.depends # cached
+ocamlfind ocamldep -modules flat.ml > flat.ml.depends
 # Target: closure.ml.depends, tags: { extension:ml, file:closure.ml, ocaml, ocamldep, quiet }
-ocamlfind ocamldep -modules closure.ml > closure.ml.depends
+ocamlfind ocamldep -modules closure.ml > closure.ml.depends # cached
 # Target: normal.ml.depends, tags: { extension:ml, file:normal.ml, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -modules normal.ml > normal.ml.depends # cached
 # Target: misc.ml.depends, tags: { extension:ml, file:misc.ml, ocaml, ocamldep, quiet }
@@ -30,7 +30,11 @@ ocamlfind ocamlc -c -o pretty.cmi pretty.mli # cached
 # Target: normal.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:normal.cmo, file:normal.ml, implem, ocaml, quiet }
 ocamlfind ocamlc -c -o normal.cmo normal.ml # cached
 # Target: closure.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:closure.cmo, file:closure.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -o closure.cmo closure.ml
+ocamlfind ocamlc -c -o closure.cmo closure.ml # cached
+# Target: environment.mli.depends, tags: { extension:mli, file:environment.mli, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -modules environment.mli > environment.mli.depends # cached
+# Target: environment.cmi, tags: { byte, compile, extension:mli, file:environment.mli, interf, ocaml, quiet }
+ocamlfind ocamlc -c -o environment.cmi environment.mli # cached
 # Target: flat.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:flat.cmo, file:flat.ml, implem, ocaml, quiet }
 ocamlfind ocamlc -c -o flat.cmo flat.ml
 # Target: vm.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:vm.cmo, file:vm.ml, implem, ocaml, quiet }
@@ -98,7 +102,11 @@ ocamlfind ocamlopt -c -o pretty.cmx pretty.ml # cached
 # Target: normal.cmx, tags: { compile, extension:cmx, extension:ml, file:normal.cmx, file:normal.ml, implem, native, ocaml, quiet }
 ocamlfind ocamlopt -c -o normal.cmx normal.ml # cached
 # Target: closure.cmx, tags: { compile, extension:cmx, extension:ml, file:closure.cmx, file:closure.ml, implem, native, ocaml, quiet }
-ocamlfind ocamlopt -c -o closure.cmx closure.ml
+ocamlfind ocamlopt -c -o closure.cmx closure.ml # cached
+# Target: environment.ml.depends, tags: { extension:ml, file:environment.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -modules environment.ml > environment.ml.depends # cached
+# Target: environment.cmx, tags: { compile, extension:cmx, extension:ml, file:environment.cmx, file:environment.ml, implem, native, ocaml, quiet }
+ocamlfind ocamlopt -c -o environment.cmx environment.ml # cached
 # Target: flat.cmx, tags: { compile, extension:cmx, extension:ml, file:flat.cmx, file:flat.ml, implem, native, ocaml, quiet }
 ocamlfind ocamlopt -c -o flat.cmx flat.ml
 # Target: vm.cmx, tags: { compile, extension:cmx, extension:ml, file:vm.cmx, file:vm.ml, implem, native, ocaml, quiet }
@@ -134,5 +142,5 @@ ocamlfind ocamlopt -c -o opt.cmx opt.ml
 # Target: main.cmx, tags: { compile, extension:cmx, extension:ml, file:main.cmx, file:main.ml, implem, native, ocaml, quiet }
 ocamlfind ocamlopt -c -o main.cmx main.ml
 # Target: main.native, tags: { dont_link_with, extension:native, file:main.native, link, native, ocaml, program, quiet }
-ocamlfind ocamlopt -linkpkg arm_spec.cmx misc.cmx pretty.cmx syntax.cmx normal.cmx closure.cmx flat.cmx vm.cmx arm_noreg.cmx reg.cmx arm_reg.cmx mySet.cmx cfg.cmx myMap.cmx dfa.cmx parser.cmx lexer.cmx live.cmx opt.cmx main.cmx -o main.native
+ocamlfind ocamlopt -linkpkg arm_spec.cmx misc.cmx pretty.cmx syntax.cmx normal.cmx closure.cmx environment.cmx flat.cmx vm.cmx arm_noreg.cmx reg.cmx arm_reg.cmx mySet.cmx cfg.cmx myMap.cmx dfa.cmx parser.cmx lexer.cmx live.cmx opt.cmx main.cmx -o main.native
 # Compilation successful.

@@ -1,3 +1,5 @@
+module F = Flat
+
 let debug = ref false
 let dprint s = if !debug then (print_string (s ()) ; flush stdout)
 
@@ -21,15 +23,17 @@ let rec compile prompt ichan cont =
     dprint (fun () -> "(* [Normal form] *)\n" ^ (Normal.string_of_norm norm));
 
     (* Closure conversion (4章) *)
+    F.program := [];
     let closed = Closure.convert_exe norm in
     dprint (fun () -> "\n(* [Closure] *)\n" ^ (Closure.string_of_closure closed));
 
     (* Flattening (5章前半) *)
-    let flat = Flat.flatten closed in
-    dprint (fun () -> "\n(* [Flat] *)\n" ^ (Flat.string_of_flat flat));
+    let top = Flat.flatten closed in
+    F.program := F.RecDecl("_toplevel", [], top) :: (F.(!program));
+    dprint (fun () -> "\n(* [Flat] *)\n" ^ (Flat.string_of_flat (F.(!program))));
 
     (* Translate to VM (5章後半) *)
-    let vmcode = Vm.trans flat in
+    let vmcode = Vm.trans F.(!program) in
     dprint (fun () -> "\n(* [VM code] *)\n" ^ (Vm.string_of_vm vmcode));
 
     (* 制御フローグラフを表示 *)

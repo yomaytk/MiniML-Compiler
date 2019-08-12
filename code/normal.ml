@@ -139,7 +139,9 @@ let rec norm_exp (e: Syntax.exp) (f: cexp -> exp) = match e with
                         |	_ -> let nid2 = fresh_id "va" in
                                     norm_exp e2 (fun x -> LetExp (nid2, x, f (AppExp (e1v, Var nid2)))))
             | 	S.ILit _ | S.BLit _ -> err "e1 must be fun in e1 e2"
-            (* |   S.FunExp (_, _) -> let ff = norm_exp e1 (fun x ->  x)  *)
+            (* |   S.FunExp (_, _) -> let ff = norm_exp e1 (fun x ->  CompExp x) in (match ff with
+                                                                                        LetRecExp (id, _, _, _) -> norm_exp (S.AppExp(S.Var id, e2)) f
+                                                                                    |   _ -> err "normal AppExp error") *)
 			|	_ -> let nid1 = fresh_id "va" in
                         (match e2 with
                                 S.Var _ | S.ILit _ | S.BLit _ -> norm_exp e1 (fun x -> LetExp (nid1, x, f (AppExp (Var nid1, con_expvalue e2))))
