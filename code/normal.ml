@@ -115,10 +115,11 @@ let rec norm_exp (e: Syntax.exp) (f: cexp -> exp) = match e with
                                                                             |   _          -> LetExp(nid1, x, LetExp(nid2, y, f (BinOp(op, Var nid1, Var nid2))))))))
 	| S.IfExp (e1, e2, e3) ->	
         (match e1 with
-                S.BLit _ -> f (IfExp (con_expvalue e1, norm_exp e2 (fun x -> CompExp x), norm_exp e3 (fun x -> CompExp x)))
+                S.Var id -> f (IfExp (Var id, norm_exp e2 (fun x -> CompExp x), norm_exp e3 (fun x -> CompExp x)))
+            |   S.BLit _ -> f (IfExp (con_expvalue e1, norm_exp e2 (fun x -> CompExp x), norm_exp e3 (fun x -> CompExp x)))
             | 	S.ILit _ -> err "e1 must be bool in if e1 then ..."
             | 	_ ->	let nid = fresh_id "va" in
-                norm_exp e1 (fun x -> LetExp (nid, x, f (IfExp (Var nid, norm_exp e2 (fun x -> CompExp x), norm_exp e3 (fun x -> CompExp x))))))
+                            norm_exp e1 (fun x -> LetExp (nid, x, f (IfExp (Var nid, norm_exp e2 (fun x -> CompExp x), norm_exp e3 (fun x -> CompExp x))))))
     | S.LetExp (id, e1, e2) -> 
         (* let nid1 = fresh_id "va" in *)
             (match e1 with
@@ -178,7 +179,7 @@ let rec norm_exp (e: Syntax.exp) (f: cexp -> exp) = match e with
                         norm_exp e (fun x -> LetExp (nid, x, f (ProjExp (Var nid, i)))))
 	(* | _ -> f (ValExp (IntV 1))   TODO *)
 
-and normalize e = norm_exp e (fun ce -> CompExp ce)
+and normalize e = norm_exp e (fun x -> CompExp x)
 
 (* ==== entry point ==== *)
 let convert prog =

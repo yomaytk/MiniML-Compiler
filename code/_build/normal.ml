@@ -107,15 +107,16 @@ let rec norm_exp (e: Syntax.exp) (f: cexp -> exp) = match e with
 	| S.BLit false -> f (ValExp (IntV 0))
     | S.BinOp(op, e1, e2) -> let nid1 = fresh_id "ai" in let nid2 = fresh_id "bi" in
             norm_exp e1 (fun x -> (match x with
-            ValExp vc1 -> norm_exp e2 (fun y -> (match y with
-                                                        ValExp vc2 -> f (BinOp(op, vc1, vc2))
-                                                    |   _          -> LetExp(nid2, y, f (BinOp(op, vc1, Var nid2)))))
-        |   _ -> norm_exp e2 (fun y -> (match y with
-                                                ValExp vc2 -> LetExp(nid1, x, f (BinOp(op, Var nid1, vc2)))
-                                            |   _          -> LetExp(nid1, x, LetExp(nid2, y, f (BinOp(op, Var nid1, Var nid2))))))))
+                                            ValExp vc1 -> norm_exp e2 (fun y -> (match y with
+                                                                                        ValExp vc2 -> f (BinOp(op, vc1, vc2))
+                                                                                    |   _          -> LetExp(nid2, y, f (BinOp(op, vc1, Var nid2)))))
+                                        |   _ -> norm_exp e2 (fun y -> (match y with
+                                                                                ValExp vc2 -> LetExp(nid1, x, f (BinOp(op, Var nid1, vc2)))
+                                                                            |   _          -> LetExp(nid1, x, LetExp(nid2, y, f (BinOp(op, Var nid1, Var nid2))))))))
 	| S.IfExp (e1, e2, e3) ->	
         (match e1 with
-                S.BLit _ -> f (IfExp (con_expvalue e1, norm_exp e2 (fun x -> CompExp x), norm_exp e3 (fun x -> CompExp x)))
+                S.Var id -> f (IfExp (Var id, norm_exp e2 (fun x -> CompExp x), norm_exp e3 (fun x -> CompExp x)))
+            |   S.BLit _ -> f (IfExp (con_expvalue e1, norm_exp e2 (fun x -> CompExp x), norm_exp e3 (fun x -> CompExp x)))
             | 	S.ILit _ -> err "e1 must be bool in if e1 then ..."
             | 	_ ->	let nid = fresh_id "va" in
                 norm_exp e1 (fun x -> LetExp (nid, x, f (IfExp (Var nid, norm_exp e2 (fun x -> CompExp x), norm_exp e3 (fun x -> CompExp x))))))
