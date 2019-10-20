@@ -29,9 +29,6 @@ ocamlfind ocamldep -modules pretty.mli > pretty.mli.depends # cached
 ocamlfind ocamlc -c -o pretty.cmi pretty.mli # cached
 # Target: normal.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:normal.cmo, file:normal.ml, implem, ocaml, quiet }
 ocamlfind ocamlc -c -o normal.cmo normal.ml
-+ ocamlfind ocamlc -c -o normal.cmo normal.ml
-File "normal.ml", line 127, characters 12-16:
-Warning 26: unused variable nid1.
 # Target: environment.mli.depends, tags: { extension:mli, file:environment.mli, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -modules environment.mli > environment.mli.depends # cached
 # Target: environment.cmi, tags: { byte, compile, extension:mli, file:environment.mli, interf, ocaml, quiet }
@@ -104,9 +101,6 @@ ocamlfind ocamldep -modules pretty.ml > pretty.ml.depends # cached
 ocamlfind ocamlopt -c -o pretty.cmx pretty.ml # cached
 # Target: normal.cmx, tags: { compile, extension:cmx, extension:ml, file:normal.cmx, file:normal.ml, implem, native, ocaml, quiet }
 ocamlfind ocamlopt -c -o normal.cmx normal.ml
-+ ocamlfind ocamlopt -c -o normal.cmx normal.ml
-File "normal.ml", line 127, characters 12-16:
-Warning 26: unused variable nid1.
 # Target: environment.ml.depends, tags: { extension:ml, file:environment.ml, ocaml, ocamldep, quiet }
 ocamlfind ocamldep -modules environment.ml > environment.ml.depends # cached
 # Target: environment.cmx, tags: { compile, extension:cmx, extension:ml, file:environment.cmx, file:environment.ml, implem, native, ocaml, quiet }

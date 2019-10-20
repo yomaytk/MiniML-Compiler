@@ -105,18 +105,28 @@ let rec norm_exp (e: Syntax.exp) (f: cexp -> exp) = match e with
 	| S.ILit i -> f (ValExp (IntV i))
 	| S.BLit true -> f (ValExp (IntV 1))
 	| S.BLit false -> f (ValExp (IntV 0))
-	| S.BinOp(op, e1, e2) -> 
+    | S.BinOp(op, e1, e2) -> 
         (match e1 with
-            S.ILit _ -> let e1v = con_expvalue e1 in
-                        (match e2 with
-                            S.ILit _ -> f (BinOp(op, e1v, con_expvalue e2))
-                        | _ ->  let nid2 = fresh_id "va" in 
-                            norm_exp e2 (fun y -> LetExp (nid2, y, f (BinOp(op, e1v, Var nid2)))))
-            | _ -> let nid1 = fresh_id "va" in
-                (match e2 with
-                    S.ILit _ -> norm_exp e1 (fun x -> LetExp (nid1, x, f (BinOp (op, Var nid1, con_expvalue e2))))
-                | _ ->  let nid2 = fresh_id "va" in 
-                    norm_exp e1 (fun x -> norm_exp e2 (fun y -> LetExp (nid1, x, LetExp (nid2, y, f (BinOp (op, Var nid1, Var nid2))))))))
+                S.ILit _ -> let e1v = con_expvalue e1 in
+                            (match e2 with
+                                S.ILit _ -> f (BinOp(op, e1v, con_expvalue e2))
+                            |   _ ->  let nid2 = fresh_id "ai" in
+                                norm_exp e2 (fun x -> ( match x with
+                                                                ValExp vc -> f (BinOp(op, e1v, vc))
+                                                            |   _ -> LetExp (nid2, x, f (BinOp(op, e1v, Var nid2))))))
+            |   _ -> let nid1 = fresh_id "ci" in
+                    (match e2 with
+                            S.ILit _ -> norm_exp e1 (fun x -> ( match x with 
+                                                                        ValExp vc -> f (BinOp(op, vc, con_expvalue e2))
+                                                                    |   _ -> LetExp (nid1, x, f (BinOp (op, Var nid1, con_expvalue e2)))))
+                        |   _ ->  let nid2 = fresh_id "bi" in 
+                                    norm_exp e1 (fun x -> (match x with
+                                                                    ValExp vc1 -> norm_exp e2 (fun y -> (match y with
+                                                                                                                ValExp vc2 -> f (BinOp(op, vc1, vc2))
+                                                                                                            |   _ -> LetExp(nid2, y, f (BinOp(op, vc1, Var nid2)))))
+                                                                |   _ -> norm_exp e2 (fun y -> (match y with
+                                                                                                        ValExp vc2 -> LetExp(nid1, x, f (BinOp(op, Var nid1, vc2)))
+                                                                                                    |   _ -> LetExp(nid1, x, LetExp(nid2, y, f (BinOp(op, Var nid1, Var nid2))))))))))
 	| S.IfExp (e1, e2, e3) ->	
         (match e1 with
                 S.BLit _ -> f (IfExp (con_expvalue e1, norm_exp e2 (fun x -> CompExp x), norm_exp e3 (fun x -> CompExp x)))
