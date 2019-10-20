@@ -132,19 +132,15 @@ let rec norm_exp (e: Syntax.exp) (f: cexp -> exp) = match e with
 	| S.AppExp (e1, e2) -> 
 		(match e1 with
                 S.ILit _ | S.BLit _ -> err "e1 must be fun in e1 e2"
-            |   S.Var id -> (match e2 with
-                                    S.Var _ | S.ILit _ | S.BLit _ -> f (AppExp (Var id, con_expvalue e2))
-                                |	_ -> let nid2 = fresh_id "ei" in
-                                            norm_exp e2 (fun y -> (match y with
-                                                                        ValExp vc -> f (AppExp (Var id, vc))
-                                                                    |   _         -> LetExp (nid2, y, f (AppExp (Var id, Var nid2))))))
-			|	_ -> let nid1 = fresh_id "fi" in
-                        (match e2 with
-                                S.Var _ | S.ILit _ | S.BLit _ -> norm_exp e1 (fun x -> LetExp (nid1, x, f (AppExp (Var nid1, con_expvalue e2))))
-                            |	_ -> let nid2 = fresh_id "gi" in
-                                        norm_exp e1 (fun x -> norm_exp e2 (fun y -> (match y with
-                                                                                            ValExp vc -> LetExp (nid1, x, f (AppExp (Var nid1, vc)))
-                                                                                        |   _         -> LetExp (nid1, x, LetExp (nid2, y, f (AppExp (Var nid1, Var nid2)))))))))
+            |   S.Var id -> let nid2 = fresh_id "ei" in
+                                norm_exp e2 (fun y -> (match y with
+                                                            ValExp vc -> f (AppExp (Var id, vc))
+                                                        |   _         -> LetExp (nid2, y, f (AppExp (Var id, Var nid2)))))
+			|	_ -> let nid1 = fresh_id "fi" in let nid2 = fresh_id "gi" in
+                        norm_exp e1 (fun x -> 
+                            norm_exp e2 (fun y -> (match y with
+                                                        ValExp vc -> LetExp (nid1, x, f (AppExp (Var nid1, vc)))
+                                                    |   _         -> LetExp (nid1, x, LetExp (nid2, y, f (AppExp (Var nid1, Var nid2))))))))
     | S.LetRecExp (id1, id2, e1, e2) -> 
         (match e2 with
                 S.ILit _ | S.BLit _ -> LetRecExp (id1, id2, norm_exp e1 (fun x -> CompExp x), f (ValExp (con_expvalue e2)))
