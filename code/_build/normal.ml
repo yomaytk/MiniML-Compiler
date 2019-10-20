@@ -107,49 +107,50 @@ let rec norm_exp (e: Syntax.exp) (f: cexp -> exp) = match e with
 	| S.BLit false -> f (ValExp (IntV 0))
 	| S.BinOp(op, e1, e2) -> 
         (match e1 with
-            S.Var _ | S.ILit _ -> let e1v = con_expvalue e1 in
+            S.ILit _ -> let e1v = con_expvalue e1 in
                         (match e2 with
-                            S.Var _ | S.ILit _ -> f (BinOp(op, e1v, con_expvalue e2))
+                            S.ILit _ -> f (BinOp(op, e1v, con_expvalue e2))
                         | _ ->  let nid2 = fresh_id "va" in 
                             norm_exp e2 (fun y -> LetExp (nid2, y, f (BinOp(op, e1v, Var nid2)))))
             | _ -> let nid1 = fresh_id "va" in
                 (match e2 with
-                    S.Var _ | S.ILit _ -> norm_exp e1 (fun x -> LetExp (nid1, x, f (BinOp (op, Var nid1, con_expvalue e2))))
+                    S.ILit _ -> norm_exp e1 (fun x -> LetExp (nid1, x, f (BinOp (op, Var nid1, con_expvalue e2))))
                 | _ ->  let nid2 = fresh_id "va" in 
                     norm_exp e1 (fun x -> norm_exp e2 (fun y -> LetExp (nid1, x, LetExp (nid2, y, f (BinOp (op, Var nid1, Var nid2))))))))
 	| S.IfExp (e1, e2, e3) ->	
         (match e1 with
-                S.BLit _ | S.Var _ -> f (IfExp (con_expvalue e1, norm_exp e2 (fun x -> CompExp x), norm_exp e3 (fun x -> CompExp x)))
+                S.BLit _ -> f (IfExp (con_expvalue e1, norm_exp e2 (fun x -> CompExp x), norm_exp e3 (fun x -> CompExp x)))
             | 	S.ILit _ -> err "e1 must be bool in if e1 then ..."
             | 	_ ->	let nid = fresh_id "va" in
                 norm_exp e1 (fun x -> LetExp (nid, x, f (IfExp (Var nid, norm_exp e2 (fun x -> CompExp x), norm_exp e3 (fun x -> CompExp x))))))
-	| S.LetExp (id, e1, e2) -> 
-        (match e1 with
-                S.LetExp (_, _, _) | S.LetRecExp (_, _, _, _) | S.LoopExp(_, _, _) | S.RecurExp _ -> 
-                let nid = fresh_id "va" in
-                norm_exp e1 (fun x -> LetExp (nid, x, LetExp(id, ValExp (Var nid), norm_exp e2 f)))
-                (* norm_exp e1 (fun x -> LetExp (id, x, norm_exp e2 f)) *)
-            | _ -> norm_exp e1 (fun x -> LetExp (id, x, norm_exp e2 f)))
+    | S.LetExp (id, e1, e2) -> 
+        let nid1 = fresh_id "va" in
+            (match e1 with
+                    S.LetExp (_, _, _) | S.LetRecExp (_, _, _, _) | S.LoopExp(_, _, _) | S.RecurExp _ -> 
+                        (* let nid2 = fresh_id "va" in *)
+                        norm_exp e1 (fun x -> LetExp (nid1, x, LetExp(id, ValExp (Var nid1), norm_exp e2 f)))
+                        (* norm_exp e1 (fun x -> LetExp (id, x, norm_exp e2 f)) *)
+                |   _ -> norm_exp e1 (fun x -> LetExp (id, x, norm_exp e2 f)))
 	| S.FunExp (id, e) -> let ff = fresh_id "f" in norm_exp (S.LetRecExp (ff, id, e, Var ff)) f
 	| S.AppExp (e1, e2) -> 
 		(match e1 with
-                S.Var _ -> let e1v = con_expvalue e1 in
+                (* S.Var _ -> let e1v = con_expvalue e1 in
                         (match e2 with
                             S.Var _ | S.ILit _ | S.BLit _ ->  f (AppExp (e1v, con_expvalue e2))
                         |	_ -> let nid2 = fresh_id "va" in
-                                    norm_exp e2 (fun x -> LetExp (nid2, x, f (AppExp (e1v, Var nid2)))))
+                                    norm_exp e2 (fun x -> LetExp (nid2, x, f (AppExp (e1v, Var nid2))))) *)
             | 	S.ILit _ | S.BLit _ -> err "e1 must be fun in e1 e2"
             (* |   S.FunExp (_, _) -> let ff = norm_exp e1 (fun x ->  CompExp x) in (match ff with
                                                                                         LetRecExp (id, _, _, _) -> norm_exp (S.AppExp(S.Var id, e2)) f
                                                                                     |   _ -> err "normal AppExp error") *)
 			|	_ -> let nid1 = fresh_id "va" in
                         (match e2 with
-                                S.Var _ | S.ILit _ | S.BLit _ -> norm_exp e1 (fun x -> LetExp (nid1, x, f (AppExp (Var nid1, con_expvalue e2))))
+                                S.ILit _ | S.BLit _ -> norm_exp e1 (fun x -> LetExp (nid1, x, f (AppExp (Var nid1, con_expvalue e2))))
                             |	_ -> let nid2 = fresh_id "va" in
                                 norm_exp e1 (fun x -> norm_exp e2 (fun y -> LetExp (nid1, x, LetExp (nid2, y, f (AppExp (Var nid1, Var nid2))))))))
     | S.LetRecExp (id1, id2, e1, e2) -> 
         (match e2 with
-                S.Var _ | S.ILit _ | S.BLit _ -> LetRecExp (id1, id2, norm_exp e1 (fun x -> CompExp x), f (ValExp (con_expvalue e2)))
+                S.ILit _ | S.BLit _ -> LetRecExp (id1, id2, norm_exp e1 (fun x -> CompExp x), f (ValExp (con_expvalue e2)))
             |   _ -> LetRecExp (id1, id2, norm_exp e1 (fun x -> CompExp x), norm_exp e2 f))
 	| S.LoopExp (id, e1, e2) -> 
         (match e1 with
@@ -159,24 +160,24 @@ let rec norm_exp (e: Syntax.exp) (f: cexp -> exp) = match e with
             | _ -> norm_exp e1 (fun x -> LoopExp (id, x, norm_exp e2 f)))
     | S.RecurExp e -> 
         (match e with
-                S.Var _ | S.ILit _ | S.BLit _ -> RecurExp (con_expvalue e)
+                S.ILit _ | S.BLit _ -> RecurExp (con_expvalue e)
             |   _ -> let nid = fresh_id "va" in 
                         norm_exp e (fun x -> LetExp (nid, x, RecurExp (Var nid))))
     | S.TupleExp (e1, e2) -> 
         (match e1 with
-                S.Var _ | S.ILit _ | S.BLit _ -> let e1v = con_expvalue e1 in
+                S.ILit _ | S.BLit _ -> let e1v = con_expvalue e1 in
                                                     (match e2 with
-                                                            S.Var _ | S.ILit _ | S.BLit _ -> f (TupleExp (e1v, con_expvalue e2))
+                                                            S.ILit _ | S.BLit _ -> f (TupleExp (e1v, con_expvalue e2))
                                                         |   _ -> let nid2 = fresh_id "va" in
                                                                     norm_exp e2 (fun x -> LetExp (nid2, x, f (TupleExp (e1v, Var nid2)))))
             |   _ -> let nid1 = fresh_id "va" in
                         (match e2 with
-                                S.Var _ | S.ILit _ | S.BLit _ -> norm_exp e1 (fun x -> LetExp (nid1, x, f (TupleExp (Var nid1, con_expvalue e2))))
+                                S.ILit _ | S.BLit _ -> norm_exp e1 (fun x -> LetExp (nid1, x, f (TupleExp (Var nid1, con_expvalue e2))))
                             |   _ -> let nid2 = fresh_id "va" in
                                         norm_exp e1 (fun x -> norm_exp e2 (fun y -> LetExp (nid1, x, LetExp (nid2, y, f (TupleExp (Var nid1, Var nid2))))))))
     | S.ProjExp (e, i) ->
         (match e with
-                S.Var _ | S.ILit _ | S.BLit _ -> f (ProjExp (con_expvalue e, i))
+                S.ILit _ | S.BLit _ -> f (ProjExp (con_expvalue e, i))
             |   _ -> let nid = fresh_id "va" in
                         norm_exp e (fun x -> LetExp (nid, x, f (ProjExp (Var nid, i)))))
 	(* | _ -> f (ValExp (IntV 1))   TODO *)

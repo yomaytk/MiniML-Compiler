@@ -1475,7 +1475,7 @@ and toplevel : (Lexing.lexbuf -> token) -> Lexing.lexbuf -> (
         _menhir_env._menhir_error <- true;
         _menhir_errorcase _menhir_env (Obj.magic _menhir_stack) MenhirState0)
 
-# 269 "/home/masashi/.opam/4.07.1/lib/menhir/standard.mly"
+# 269 "<standard.mly>"
   
 
 # 1482 "parser.ml"
