@@ -128,7 +128,7 @@ let rec norm_exp (e: Syntax.exp) (f: cexp -> exp) = match e with
             (match e1 with
                     S.LetExp (_, _, _) | S.LetRecExp (_, _, _, _) | S.LoopExp(_, _, _) | S.RecurExp _ -> 
                         (* let nid2 = fresh_id "va" in *)
-                        norm_exp e1 (fun x -> LetExp (nid1, x, LetExp(id, ValExp (Var nid1), norm_exp e2 f)))
+                        norm_exp e1 (fun x -> LetExp(id, x, norm_exp e2 f))
                         (* norm_exp e1 (fun x -> LetExp (id, x, norm_exp e2 f)) *)
                 |   _ -> norm_exp e1 (fun x -> LetExp (id, x, norm_exp e2 f)))
 	| S.FunExp (id, e) -> let ff = fresh_id "f" in norm_exp (S.LetRecExp (ff, id, e, Var ff)) f
