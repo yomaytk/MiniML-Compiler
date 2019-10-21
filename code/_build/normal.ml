@@ -171,11 +171,12 @@ let rec norm_exp (e: Syntax.exp) (f: cexp -> exp) = match e with
                                             ValExp vc2 -> LetExp (nid1, x, f (TupleExp(Var nid1, vc2)))
                                         |   _          -> LetExp (nid1, x, LetExp (nid2, y, f (TupleExp(Var nid1, Var nid2))))))))
 
-    | S.ProjExp (e, i) ->
-        (match e with
-                S.ILit _ | S.BLit _ -> f (ProjExp (con_expvalue e, i))
-            |   _ -> let nid = fresh_id "va" in
-                        norm_exp e (fun x -> LetExp (nid, x, f (ProjExp (Var nid, i)))))
+    | S.ProjExp (e, i) -> let nid = fresh_id "ji" in
+        norm_exp e (fun x -> 
+            (match x with
+                    ValExp vc -> f (ProjExp (vc, i))
+                |   _         -> LetExp (nid, x, f (ProjExp (Var nid, i)))))
+
 	(* | _ -> f (ValExp (IntV 1))   TODO *)
 
 and normalize e = norm_exp e (fun x -> CompExp x)
