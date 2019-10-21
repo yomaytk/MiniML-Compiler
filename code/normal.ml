@@ -150,10 +150,8 @@ let rec norm_exp (e: Syntax.exp) (f: cexp -> exp) = match e with
                                         ValExp vc -> LetExp (nid1, x, f (AppExp (Var nid1, vc)))
                                     |   _         -> LetExp (nid1, x, LetExp (nid2, y, f (AppExp (Var nid1, Var nid2))))))))
 
-    | S.LetRecExp (id1, id2, e1, e2) -> 
-        (match e2 with
-                S.ILit _ | S.BLit _ -> LetRecExp (id1, id2, norm_exp e1 (fun x -> CompExp x), f (ValExp (con_expvalue e2)))
-            |   _ -> LetRecExp (id1, id2, norm_exp e1 (fun x -> CompExp x), norm_exp e2 f))
+    | S.LetRecExp (id1, id2, e1, e2) -> LetRecExp (id1, id2, norm_exp e1 (fun x -> CompExp x), norm_exp e2 f)
+
 	| S.LoopExp (id, e1, e2) -> 
         (match e1 with
                 S.LetExp (_, _, _) | S.LetRecExp (_, _, _, _) | S.LoopExp (_, _, _) | S.RecurExp _ ->
